@@ -2,20 +2,15 @@ package com.example.ui.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Palette
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Speed
-import androidx.compose.material.icons.filled.Vibration
+import androidx.compose.material.icons.filled.Science
 import androidx.compose.material.icons.filled.Widgets
 import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Palette
-import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.Speed
-import androidx.compose.material.icons.outlined.Vibration
+import androidx.compose.material.icons.outlined.Science
 import androidx.compose.material.icons.outlined.Widgets
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.example.R
 
-enum class NavDestination(
+enum class TopLevelDestination(
     val route: String,
     val labelResId: Int,
     val selectedIcon: ImageVector,
@@ -23,38 +18,30 @@ enum class NavDestination(
 ) {
     HOME(
         route = "home",
-        labelResId = com.example.R.string.nav_home,
+        labelResId = R.string.nav_home,
         selectedIcon = Icons.Filled.Home,
         unselectedIcon = Icons.Outlined.Home
     ),
-    COMPONENTS(
-        route = "components",
-        labelResId = com.example.R.string.nav_components,
+    EXPLORE(
+        route = "explore",
+        labelResId = R.string.nav_explore,
         selectedIcon = Icons.Filled.Widgets,
         unselectedIcon = Icons.Outlined.Widgets
     ),
-    HAPTICS(
-        route = "haptics",
-        labelResId = com.example.R.string.nav_haptics,
-        selectedIcon = Icons.Filled.Vibration,
-        unselectedIcon = Icons.Outlined.Vibration
-    ),
-    MOTION(
-        route = "motion",
-        labelResId = com.example.R.string.nav_motion,
-        selectedIcon = Icons.Filled.Speed,
-        unselectedIcon = Icons.Outlined.Speed
-    ),
-    THEME(
-        route = "theme",
-        labelResId = com.example.R.string.nav_theme,
-        selectedIcon = Icons.Filled.Palette,
-        unselectedIcon = Icons.Outlined.Palette
-    ),
-    SETTINGS(
-        route = "settings",
-        labelResId = com.example.R.string.nav_settings,
-        selectedIcon = Icons.Filled.Settings,
-        unselectedIcon = Icons.Outlined.Settings
+    LABS(
+        route = "labs",
+        labelResId = R.string.nav_labs,
+        selectedIcon = Icons.Filled.Science,
+        unselectedIcon = Icons.Outlined.Science
     )
+}
+
+object SubDestinations {
+    const val SETTINGS = "settings"
+    const val HAPTICS = "haptics"
+    const val MOTION = "motion"
+    const val THEME = "theme"
+    const val PLAYGROUND = "playground/{componentId}"
+
+    fun playgroundRoute(componentId: String) = "playground/$componentId"
 }

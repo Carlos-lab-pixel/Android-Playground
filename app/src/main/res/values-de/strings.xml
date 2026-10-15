@@ -4,11 +4,21 @@
 
     <!-- Navigation -->
     <string name="nav_home">Start</string>
+    <string name="nav_explore">Erkunden</string>
+    <string name="nav_labs">Labore</string>
     <string name="nav_components">Komponenten</string>
     <string name="nav_haptics">Haptik</string>
     <string name="nav_motion">Bewegung</string>
     <string name="nav_theme">Design</string>
     <string name="nav_settings">Einstellungen</string>
+    <string name="settings_action">Einstellungen</string>
+
+    <!-- Labs Hub -->
+    <string name="labs_title">Material Labore</string>
+    <string name="labs_subtitle">Interaktive Testumgebungen für taktile Haptik, Federphysik und dynamische Design-Tokens.</string>
+    <string name="labs_tab_haptics">Haptik</string>
+    <string name="labs_tab_motion">Bewegung</string>
+    <string name="labs_tab_theme">Design</string>
 
     <!-- Home Screen -->
     <string name="home_hero_title">Material 3 Expressive</string>

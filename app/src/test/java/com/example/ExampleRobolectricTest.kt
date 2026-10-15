@@ -12,6 +12,7 @@ import com.example.model.HapticCapabilityInfo
 import com.example.model.PlaygroundConfig
 import com.example.platform.haptics.HapticsService
 import com.example.ui.catalog.ComponentCatalogData
+import com.example.ui.motion.toScaledComposePath
 import com.example.ui.playground.PlaygroundCodeGenerator
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -122,4 +123,39 @@ class ExampleRobolectricTest {
         service.cancel()
         assertTrue(service.isCancelled)
     }
+
+    @Test
+    fun top_level_destinations_are_home_explore_and_labs() {
+        val destinations = com.example.ui.navigation.TopLevelDestination.values()
+        assertEquals(3, destinations.size)
+        assertEquals("home", destinations[0].route)
+        assertEquals("explore", destinations[1].route)
+        assertEquals("labs", destinations[2].route)
+    }
+
+    @Test
+    fun google_sans_flex_font_resource_exists() {
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        val fontResId = context.resources.getIdentifier("google_sans_flex", "font", context.packageName)
+        assertTrue("google_sans_flex font resource should exist", fontResId != 0)
+    }
+
+    @Test
+    fun expressive_shape_factory_creates_shapes_and_morphs_successfully() {
+        val star = com.example.ui.motion.ExpressiveShapeFactory.create4PointStar()
+        val clover = com.example.ui.motion.ExpressiveShapeFactory.createFlowerClover()
+        val pill = com.example.ui.motion.ExpressiveShapeFactory.createPill()
+        val circle = com.example.ui.motion.ExpressiveShapeFactory.createCircle()
+
+        assertNotNull(star)
+        assertNotNull(clover)
+        assertNotNull(pill)
+        assertNotNull(circle)
+
+        val morph = androidx.graphics.shapes.Morph(star, clover)
+        val path = morph.toScaledComposePath(0.5f, 200f, 200f)
+        assertNotNull(path)
+        assertFalse("Path should have content", path.isEmpty)
+    }
 }
+
