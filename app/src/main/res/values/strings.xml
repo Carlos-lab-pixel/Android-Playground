@@ -1,0 +1,111 @@
+<resources>
+    <string name="app_name">Material Playground</string>
+    <string name="tagline">Material 3 Expressive Laboratory</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_components">Components</string>
+    <string name="nav_haptics">Haptics</string>
+    <string name="nav_motion">Motion</string>
+    <string name="nav_theme">Theme</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Home Screen -->
+    <string name="home_hero_title">Material 3 Expressive</string>
+    <string name="home_hero_subtitle">Touch, customize, and feel native Android components with live code generation and tactile physics.</string>
+    <string name="home_quick_labs">Interactive Labs</string>
+    <string name="home_featured_component">Featured Interactive Component</string>
+    <string name="home_device_caps">Device Capabilities</string>
+    <string name="home_explore_catalog">Explore All 30+ Components</string>
+    <string name="home_recents_title">Recently Explored</string>
+    <string name="home_recents_empty">No components explored yet. Tap any component to start!</string>
+
+    <!-- Component Catalog -->
+    <string name="catalog_search_hint">Search components (e.g. Button, Chip, Slider)…</string>
+    <string name="catalog_all">All</string>
+    <string name="catalog_actions">Actions</string>
+    <string name="catalog_selection">Selection</string>
+    <string name="catalog_text_input">Text Input</string>
+    <string name="catalog_navigation">Navigation</string>
+    <string name="catalog_communication">Communication</string>
+    <string name="catalog_containment">Containment</string>
+    <string name="catalog_progress">Progress</string>
+    <string name="catalog_expressive">Expressive</string>
+    <string name="catalog_no_results">No components match your search query.</string>
+
+    <!-- Playground -->
+    <string name="playground_preview">Live Preview</string>
+    <string name="playground_controls">Interactive Controls</string>
+    <string name="playground_state_inspector">Live State Inspector</string>
+    <string name="playground_accessibility">Accessibility &amp; Specs</string>
+    <string name="playground_code_example">Kotlin Jetpack Compose Implementation</string>
+    <string name="playground_copy_code">Copy Code</string>
+    <string name="playground_code_copied">Code copied to clipboard!</string>
+    <string name="playground_reset">Reset Defaults</string>
+    <string name="playground_label_text">Label Text</string>
+    <string name="playground_enabled">Component Enabled</string>
+    <string name="playground_show_icon">Show Icon</string>
+    <string name="playground_variant">Variant</string>
+    <string name="playground_size">Size</string>
+    <string name="playground_corner_shape">Corner Rounding</string>
+
+    <!-- Haptics Lab -->
+    <string name="haptics_title">Tactile Feedback Laboratory</string>
+    <string name="haptics_subtitle">Test hardware vibrator capabilities, standard system effects, and custom pulse waveforms.</string>
+    <string name="haptics_master_toggle">Enable Tactile Feedback</string>
+    <string name="haptics_intensity">Haptic Intensity</string>
+    <string name="haptics_hardware_title">Hardware Capabilities</string>
+    <string name="haptics_vibrator_present">Vibrator Hardware: Available</string>
+    <string name="haptics_vibrator_missing">Vibrator Hardware: Not Available</string>
+    <string name="haptics_amplitude_supported">Amplitude Control: Supported</string>
+    <string name="haptics_amplitude_unsupported">Amplitude Control: Not Supported</string>
+    <string name="haptics_primitives_supported">Vibration Primitives: Supported</string>
+    <string name="haptics_primitives_unsupported">Vibration Primitives: Unsupported</string>
+    <string name="haptics_effects_title">Predefined System Effects</string>
+    <string name="haptics_test_button">Test Effect</string>
+    <string name="haptics_stop_button">Stop Playback</string>
+    <string name="haptics_designer_title">Custom Waveform Designer</string>
+    <string name="haptics_designer_duration">Pulse Duration (ms)</string>
+    <string name="haptics_designer_pulses">Number of Pulses</string>
+    <string name="haptics_designer_gap">Delay Between Pulses (ms)</string>
+    <string name="haptics_designer_amplitude">Amplitude (1-255)</string>
+    <string name="haptics_designer_play">Play Custom Sequence</string>
+    <string name="haptics_safety_notice">Note: Vibrations are capped at 1000ms max for battery and hardware safety. System settings take precedence.</string>
+
+    <!-- Motion Lab -->
+    <string name="motion_title">Motion Physics &amp; Easing Lab</string>
+    <string name="motion_subtitle">Explore Jetpack Compose spring physics, transition curves, and animated morphing.</string>
+    <string name="motion_spring_title">Spring Specification</string>
+    <string name="motion_damping">Damping Ratio: %1$.2f</string>
+    <string name="motion_stiffness">Stiffness: %1$.0f</string>
+    <string name="motion_trigger">Trigger Animation</string>
+    <string name="motion_reset">Reset</string>
+    <string name="motion_curves_title">Easing Curve Visualizer</string>
+    <string name="motion_visibility_title">AnimatedVisibility Transitions</string>
+    <string name="motion_size_title">animateContentSize Morphing</string>
+
+    <!-- Theme Studio -->
+    <string name="theme_title">Theme Studio</string>
+    <string name="theme_subtitle">Customize Material 3 dynamic color, custom seed palettes, and expressive shape geometry in real-time.</string>
+    <string name="theme_mode_title">Color Mode</string>
+    <string name="theme_mode_system">System Default</string>
+    <string name="theme_mode_light">Light</string>
+    <string name="theme_mode_dark">Dark</string>
+    <string name="theme_dynamic_color">Dynamic Color (Wallpaper / Material You)</string>
+    <string name="theme_dynamic_color_desc">Pulls tonal palettes directly from the Android 12+ device wallpaper.</string>
+    <string name="theme_seed_title">Custom Color Scheme Seeds</string>
+    <string name="theme_shape_title">Expressive Corner Shapes</string>
+    <string name="theme_shape_subtle">Subtle (Rounded 8dp)</string>
+    <string name="theme_shape_medium">Standard (Rounded 16dp)</string>
+    <string name="theme_shape_expressive">Expressive (Cut &amp; Rounded 28dp)</string>
+    <string name="theme_preview_title">Live Theme Harmonization Preview</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_language_en">English</string>
+    <string name="settings_language_de">Deutsch (German)</string>
+    <string name="settings_about_title">About Material Playground</string>
+    <string name="settings_about_desc">Native Android reference application built for Google AI Studio showcasing Material Design 3 Expressive guidelines, Compose animation APIs, tactile physics, and clean architecture.</string>
+    <string name="settings_version">Version 1.0.0 (API 29–36)</string>
+</resources>

@@ -1,0 +1,6 @@
+{
+  "name": "Material Playground",
+  "description": "Interactive Material 3 Expressive laboratory for exploring Android UI components, motion physics, tactile haptics, dynamic theming, and code generation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
