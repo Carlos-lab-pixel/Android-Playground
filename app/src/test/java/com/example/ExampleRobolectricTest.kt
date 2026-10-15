@@ -157,5 +157,29 @@ class ExampleRobolectricTest {
         assertNotNull(path)
         assertFalse("Path should have content", path.isEmpty)
     }
+
+    @Test
+    fun color_seeds_include_all_15_expressive_palettes() {
+        val seeds = com.example.model.ColorSeed.values()
+        assertEquals(15, seeds.size)
+        assertTrue(seeds.any { it.name == "NEON_CYBER" })
+        assertTrue(seeds.any { it.name == "CORAL_BLUSH" })
+        assertTrue(seeds.any { it.name == "MINT_LIME" })
+        assertTrue(seeds.any { it.name == "COBALT_AURA" })
+        assertTrue(seeds.any { it.name == "MIDNIGHT_OBSIDIAN" })
+        assertTrue(seeds.any { it.name == "ELECTRIC_SUNSET" })
+        assertTrue(seeds.any { it.name == "AURORA_CYBER" })
+        assertTrue(seeds.any { it.name == "CHERRY_BLOSSOM" })
+        assertTrue(seeds.any { it.name == "ROYAL_AMETHYST" })
+        assertTrue(seeds.any { it.name == "COSMIC_TURQUOISE" })
+    }
+
+    @Test
+    fun custom_waveform_supports_extended_pulses_and_durations() {
+        val waveform = CustomWaveformConfig(pulses = 8, durationMs = 500, gapMs = 150, amplitude = 220)
+        // 8 * 500 + 7 * 150 = 4000 + 1050 = 5050ms
+        assertEquals(5050, waveform.totalDurationMs)
+    }
 }
+
 

@@ -71,7 +71,7 @@ class HapticsManager(private val context: Context) : HapticsService {
                 true
             } else {
                 @Suppress("DEPRECATION")
-                vib.vibrate(fallbackDurationMs.coerceIn(10L, 500L))
+                vib.vibrate(fallbackDurationMs.coerceIn(10L, 5000L))
                 true
             }
         } catch (_: Exception) {
@@ -102,10 +102,9 @@ class HapticsManager(private val context: Context) : HapticsService {
         val vib = vibrator ?: return false
         if (!vib.hasVibrator()) return false
 
-        // Safety cap: limit total duration to 1000ms
-        val pulses = config.pulses.coerceIn(1, 5)
-        val duration = config.durationMs.coerceIn(10, 300).toLong()
-        val gap = config.gapMs.coerceIn(10, 200).toLong()
+        val pulses = config.pulses.coerceAtLeast(1)
+        val duration = config.durationMs.coerceAtLeast(10).toLong()
+        val gap = config.gapMs.coerceAtLeast(0).toLong()
         val baseAmp = (config.amplitude * intensityMultiplier).toInt().coerceIn(1, 255)
 
         return try {

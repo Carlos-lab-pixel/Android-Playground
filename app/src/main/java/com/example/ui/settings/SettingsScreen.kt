@@ -15,6 +15,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Language
@@ -169,7 +171,7 @@ fun SettingsScreen(
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
-                    Switch(
+                    com.example.ui.components.ExpressiveSwitch(
                         checked = themeState.isHapticsEnabled,
                         onCheckedChange = { scope.launch { preferencesRepo.updateHapticsEnabled(it) } },
                         modifier = Modifier.testTag("settings_haptics_toggle")
@@ -210,7 +212,7 @@ fun SettingsScreen(
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
-                    Switch(
+                    com.example.ui.components.ExpressiveSwitch(
                         checked = themeState.isReducedMotion,
                         onCheckedChange = { scope.launch { preferencesRepo.updateReducedMotion(it) } },
                         modifier = Modifier.testTag("settings_motion_toggle")

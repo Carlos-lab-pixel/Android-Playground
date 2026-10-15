@@ -434,6 +434,85 @@ object ComponentCatalogData {
                         .background(color)
                 )
             """.trimIndent()
+        ),
+        ComponentItem(
+            id = "expressive_loading_indicator",
+            name = "Expressive Loading Indicator",
+            category = ComponentCategory.PROGRESS,
+            description = "Material 3 Expressive indeterminate indicator looping through a 7-shape morph sequence.",
+            m3Api = "androidx.compose.material3.LoadingIndicator",
+            defaultLabel = "Loading...",
+            variants = listOf("Uncontained", "Contained"),
+            documentationSnippet = """
+                ExpressiveLoadingIndicator(
+                    isContained = true,
+                    size = 56.dp
+                )
+            """.trimIndent()
+        ),
+        ComponentItem(
+            id = "connected_button_group",
+            name = "Connected Button Group",
+            category = ComponentCategory.ACTIONS,
+            description = "Expressive replacement for segmented buttons with 2dp inner padding, outer rounding, and square/round transitions.",
+            m3Api = "androidx.compose.material3.ButtonGroup",
+            defaultLabel = "Connected Options",
+            variants = listOf("Horizontal (3)", "Horizontal (4)"),
+            documentationSnippet = """
+                ExpressiveConnectedButtonGroup(
+                    options = listOf("Day", "Week", "Month"),
+                    selectedIndex = selectedIndex,
+                    onSelectIndex = { selectedIndex = it }
+                )
+            """.trimIndent()
+        ),
+        ComponentItem(
+            id = "wavy_progress_indicator",
+            name = "Wavy Progress Indicator",
+            category = ComponentCategory.PROGRESS,
+            description = "Expressive progress indicator with animated sinusoidal waves and high-contrast stop indicators.",
+            m3Api = "androidx.compose.material3.LinearProgressIndicator (Wavy)",
+            defaultLabel = "Wavy Progress",
+            variants = listOf("Determinate (60%)", "Indeterminate"),
+            documentationSnippet = """
+                ExpressiveWavyLinearProgressIndicator(
+                    progress = 0.65f,
+                    waveAmplitude = 6.dp
+                )
+            """.trimIndent()
+        ),
+        ComponentItem(
+            id = "expressive_slider",
+            name = "Expressive Slider (XS-XL)",
+            category = ComponentCategory.SELECTION,
+            description = "Material 3 Expressive slider with thickness scale (XS to XL), inset icon, and stops.",
+            m3Api = "androidx.compose.material3.Slider (Expressive)",
+            defaultLabel = "Volume Level",
+            variants = listOf("Size M (40dp)", "Size L (56dp)", "Size XL (96dp)", "Centered"),
+            documentationSnippet = """
+                ExpressiveSlider(
+                    value = volume,
+                    onValueChange = { volume = it },
+                    size = ExpressiveSliderSize.M,
+                    showInsetIcon = true
+                )
+            """.trimIndent()
+        ),
+        ComponentItem(
+            id = "floating_toolbar",
+            name = "Floating Toolbar",
+            category = ComponentCategory.NAVIGATION,
+            description = "Floating action surface for primary navigation and actions paired with companion buttons.",
+            m3Api = "androidx.compose.material3.FloatingToolbar",
+            defaultLabel = "Toolbar Action",
+            variants = listOf("Standard", "Vibrant"),
+            documentationSnippet = """
+                FloatingToolbarNavigation(
+                    currentRoute = "home",
+                    onNavigateToDestination = { /* ... */ },
+                    onOpenSettings = { /* ... */ }
+                )
+            """.trimIndent()
         )
     )
 

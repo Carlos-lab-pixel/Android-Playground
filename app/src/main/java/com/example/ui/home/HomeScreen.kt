@@ -301,13 +301,19 @@ fun HomeScreen(
                     // Interactive Morph Canvas
                     Surface(
                         shape = RoundedCornerShape(MaterialCornerRadius.LargeIncreased),
-                        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.85f),
+                        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f),
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(180.dp)
-                            .clickable {
-                                featuredShapeIndex++
-                            }
+                            .clip(RoundedCornerShape(MaterialCornerRadius.LargeIncreased))
+                            .clickable(
+                                interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() },
+                                indication = androidx.compose.material3.ripple(bounded = true),
+                                onClick = {
+                                    haptic.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress)
+                                    featuredShapeIndex++
+                                }
+                            )
                     ) {
                         Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
                             MorphingShapeCanvas(
@@ -349,6 +355,115 @@ fun HomeScreen(
                             )
                         ) {
                             Text("Next Shape")
+                        }
+                    }
+                }
+            }
+
+            // 2.5 New M3 Expressive Components Spotlight (Guidelines Sections 10, 11, 12)
+            Surface(
+                shape = RoundedCornerShape(MaterialCornerRadius.ExtraLargeIncreased),
+                color = MaterialTheme.colorScheme.surfaceContainer,
+                tonalElevation = 2.dp,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(
+                    modifier = Modifier.padding(MaterialSpacing.space250),
+                    verticalArrangement = Arrangement.spacedBy(MaterialSpacing.space150)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column {
+                            Text(
+                                text = "M3 EXPRESSIVE SPOTLIGHT",
+                                style = MaterialTheme.typography.labelSmall,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                            Text(
+                                text = "New System Components",
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+
+                        Surface(
+                            shape = CircleShape,
+                            color = MaterialTheme.colorScheme.primaryContainer,
+                            modifier = Modifier.size(32.dp)
+                        ) {
+                            Box(contentAlignment = Alignment.Center) {
+                                Icon(
+                                    Icons.Filled.AutoAwesome,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    modifier = Modifier.size(18.dp)
+                                )
+                            }
+                        }
+                    }
+
+                    // A. Connected Button Group (Replaces Segmented Button)
+                    Column(verticalArrangement = Arrangement.spacedBy(MaterialSpacing.space50)) {
+                        Text(
+                            text = "Connected Button Group (2dp inner padding)",
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        var groupIndex by remember { mutableIntStateOf(1) }
+                        com.example.ui.components.ExpressiveConnectedButtonGroup(
+                            options = listOf("Day", "Week", "Month"),
+                            selectedIndex = groupIndex,
+                            onSelectIndex = { groupIndex = it },
+                            height = 42.dp
+                        )
+                    }
+
+                    // B. Wavy Progress Indicator (Section 12)
+                    Column(verticalArrangement = Arrangement.spacedBy(MaterialSpacing.space50)) {
+                        Text(
+                            text = "Wavy Linear Progress Indicator",
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        com.example.ui.components.ExpressiveWavyLinearProgressIndicator(
+                            progress = 0.68f,
+                            height = 16.dp,
+                            waveAmplitude = 5.dp
+                        )
+                    }
+
+                    // C. Expressive Loading Indicator (Section 10)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = "Expressive Loading Indicator",
+                                style = MaterialTheme.typography.labelMedium,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                            Text(
+                                text = "7-shape morph loop (<5s waits)",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+
+                        Row(horizontalArrangement = Arrangement.spacedBy(MaterialSpacing.space150)) {
+                            com.example.ui.components.ExpressiveLoadingIndicator(
+                                isContained = false,
+                                size = 38.dp
+                            )
+                            com.example.ui.components.ExpressiveLoadingIndicator(
+                                isContained = true,
+                                size = 38.dp
+                            )
                         }
                     }
                 }

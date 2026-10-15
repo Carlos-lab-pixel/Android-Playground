@@ -53,6 +53,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -302,6 +303,194 @@ fun MotionScreen(modifier: Modifier = Modifier) {
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(if (isExpanded) "Collapse Card" else "Expand Card")
+                }
+            }
+        }
+
+        // 4. Official AndroidX Graphics Shapes Morphing Laboratory
+        val localHaptic = androidx.compose.ui.platform.LocalHapticFeedback.current
+        var shapePairIndex by remember { mutableIntStateOf(0) }
+        var manualMorphProgress by remember { mutableFloatStateOf(0f) }
+        var isAutoMorphing by remember { mutableStateOf(false) }
+
+        val starShape = remember { ExpressiveShapeFactory.create4PointStar() }
+        val star5Shape = remember { ExpressiveShapeFactory.create5PointStar() }
+        val cloverShape = remember { ExpressiveShapeFactory.createFlowerClover(6) }
+        val pillShape = remember { ExpressiveShapeFactory.createPill() }
+        val circleShape = remember { ExpressiveShapeFactory.createCircle(16) }
+        val scallopShape = remember { ExpressiveShapeFactory.createScallop(12) }
+
+        val shapeOptions = listOf(
+            "Star (4pt)" to starShape,
+            "Star (5pt)" to star5Shape,
+            "Clover (6pt)" to cloverShape,
+            "Pill" to pillShape,
+            "Circle" to circleShape,
+            "Scallop" to scallopShape
+        )
+
+        var startShapeIdx by remember { mutableIntStateOf(0) }
+        var targetShapeIdx by remember { mutableIntStateOf(2) }
+
+        val officialMorph = remember(startShapeIdx, targetShapeIdx) {
+            androidx.graphics.shapes.Morph(shapeOptions[startShapeIdx].second, shapeOptions[targetShapeIdx].second)
+        }
+
+        val animatedProgress by animateFloatAsState(
+            targetValue = if (isAutoMorphing) 1f else manualMorphProgress,
+            animationSpec = spring(
+                dampingRatio = Spring.DampingRatioMediumBouncy,
+                stiffness = Spring.StiffnessLow
+            ),
+            label = "official_morph_spring"
+        )
+
+        Card(
+            shape = RoundedCornerShape(20.dp),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(14.dp)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Column {
+                        Text(
+                            text = "Official AndroidX Shape Morphing",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
+                        )
+                        Text(
+                            text = "Powered by androidx.graphics.shapes (Morph & RoundedPolygon)",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+
+                // Interactive Canvas Stage
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(180.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(MaterialTheme.colorScheme.surfaceContainerHighest)
+                        .clickable {
+                            localHaptic.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress)
+                            isAutoMorphing = !isAutoMorphing
+                            if (!isAutoMorphing) {
+                                manualMorphProgress = if (manualMorphProgress > 0.5f) 0f else 1f
+                            }
+                        },
+                    contentAlignment = Alignment.Center
+                ) {
+                    MorphingShapeCanvas(
+                        morph = officialMorph,
+                        progress = animatedProgress,
+                        color = MaterialTheme.colorScheme.primary,
+                        strokeColor = MaterialTheme.colorScheme.tertiary,
+                        modifier = Modifier.size(140.dp)
+                    )
+
+                    Text(
+                        text = "Tap canvas to toggle spring morph",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                        modifier = Modifier
+                            .align(Alignment.BottomCenter)
+                            .padding(bottom = 8.dp)
+                    )
+                }
+
+                // Start shape selector
+                Column {
+                    Text(
+                        text = "Start Shape: ${shapeOptions[startShapeIdx].first}",
+                        style = MaterialTheme.typography.labelMedium
+                    )
+                    androidx.compose.foundation.lazy.LazyRow(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.padding(top = 4.dp)
+                    ) {
+                        items(shapeOptions.size) { idx ->
+                            FilterChip(
+                                selected = startShapeIdx == idx,
+                                onClick = {
+                                    startShapeIdx = idx
+                                    localHaptic.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress)
+                                },
+                                label = { Text(shapeOptions[idx].first) }
+                            )
+                        }
+                    }
+                }
+
+                // Target shape selector
+                Column {
+                    Text(
+                        text = "Target Shape: ${shapeOptions[targetShapeIdx].first}",
+                        style = MaterialTheme.typography.labelMedium
+                    )
+                    androidx.compose.foundation.lazy.LazyRow(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.padding(top = 4.dp)
+                    ) {
+                        items(shapeOptions.size) { idx ->
+                            FilterChip(
+                                selected = targetShapeIdx == idx,
+                                onClick = {
+                                    targetShapeIdx = idx
+                                    localHaptic.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress)
+                                },
+                                label = { Text(shapeOptions[idx].first) }
+                            )
+                        }
+                    }
+                }
+
+                // Scrub slider
+                Column {
+                    Text(
+                        text = "Morph Progress: ${(animatedProgress * 100).toInt()}%",
+                        style = MaterialTheme.typography.labelMedium
+                    )
+                    Slider(
+                        value = if (isAutoMorphing) animatedProgress else manualMorphProgress,
+                        onValueChange = {
+                            isAutoMorphing = false
+                            manualMorphProgress = it
+                        },
+                        valueRange = 0f..1f
+                    )
+                }
+
+                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Button(
+                        onClick = {
+                            localHaptic.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress)
+                            isAutoMorphing = !isAutoMorphing
+                        },
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text(if (isAutoMorphing) "Stop Animation" else "Play Spring Morph")
+                    }
+
+                    OutlinedButton(
+                        onClick = {
+                            localHaptic.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress)
+                            // Swap start and target shapes
+                            val temp = startShapeIdx
+                            startShapeIdx = targetShapeIdx
+                            targetShapeIdx = temp
+                        }
+                    ) {
+                        Text("Swap")
+                    }
                 }
             }
         }

@@ -80,7 +80,7 @@
     <string name="haptics_designer_gap">Verzögerung zwischen Impulsen (ms)</string>
     <string name="haptics_designer_amplitude">Amplitude (1-255)</string>
     <string name="haptics_designer_play">Benutzerdefinierte Sequenz abspielen</string>
-    <string name="haptics_safety_notice">Hinweis: Vibrationen sind zum Schutz der Hardware und Batterie auf max. 1000ms begrenzt. Systemeinstellungen haben Vorrang.</string>
+
 
     <!-- Motion Lab -->
     <string name="motion_title">Bewegungsphysik &amp; Kurven</string>

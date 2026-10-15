@@ -119,7 +119,7 @@ fun HapticsScreen(
                             style = MaterialTheme.typography.titleMedium
                         )
                     }
-                    Switch(
+                    com.example.ui.components.ExpressiveSwitch(
                         checked = isMasterEnabled,
                         onCheckedChange = { isMasterEnabled = it },
                         modifier = Modifier.testTag("haptics_master_switch")
@@ -299,8 +299,8 @@ fun HapticsScreen(
                     Slider(
                         value = pulses.toFloat(),
                         onValueChange = { pulses = it.toInt() },
-                        valueRange = 1f..5f,
-                        steps = 3
+                        valueRange = 1f..10f,
+                        steps = 8
                     )
                 }
 
@@ -309,7 +309,7 @@ fun HapticsScreen(
                     Slider(
                         value = pulseDurationMs.toFloat(),
                         onValueChange = { pulseDurationMs = it.toInt() },
-                        valueRange = 20f..200f
+                        valueRange = 20f..3000f
                     )
                 }
 
@@ -318,7 +318,7 @@ fun HapticsScreen(
                     Slider(
                         value = pulseGapMs.toFloat(),
                         onValueChange = { pulseGapMs = it.toInt() },
-                        valueRange = 20f..150f
+                        valueRange = 10f..500f
                     )
                 }
 
@@ -351,12 +351,6 @@ fun HapticsScreen(
                     Spacer(Modifier.width(8.dp))
                     Text(stringResource(R.string.haptics_designer_play))
                 }
-
-                Text(
-                    text = stringResource(R.string.haptics_safety_notice),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
             }
         }
 

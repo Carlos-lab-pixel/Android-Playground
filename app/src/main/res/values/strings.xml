@@ -80,7 +80,7 @@
     <string name="haptics_designer_gap">Delay Between Pulses (ms)</string>
     <string name="haptics_designer_amplitude">Amplitude (1-255)</string>
     <string name="haptics_designer_play">Play Custom Sequence</string>
-    <string name="haptics_safety_notice">Note: Vibrations are capped at 1000ms max for battery and hardware safety. System settings take precedence.</string>
+
 
     <!-- Motion Lab -->
     <string name="motion_title">Motion Physics &amp; Easing Lab</string>

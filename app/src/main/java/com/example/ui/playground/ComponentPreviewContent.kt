@@ -2,7 +2,11 @@ package com.example.ui.playground
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -331,13 +335,10 @@ fun ComponentPreviewContent(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(config.label, style = MaterialTheme.typography.bodyLarge)
-                    Switch(
+                    com.example.ui.components.ExpressiveSwitch(
                         checked = config.isChecked,
                         onCheckedChange = { onConfigChange(config.copy(isChecked = it)) },
-                        enabled = config.enabled,
-                        thumbContent = if (config.showIcon && config.isChecked) {
-                            { Icon(Icons.Filled.Check, null, Modifier.size(SwitchDefaults.IconSize)) }
-                        } else null
+                        enabled = config.enabled
                     )
                 }
             }
@@ -571,7 +572,7 @@ fun ComponentPreviewContent(
                         Icon(Icons.Filled.Star, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
                     },
                     trailingContent = {
-                        Switch(
+                        com.example.ui.components.ExpressiveSwitch(
                             checked = config.isChecked,
                             onCheckedChange = { onConfigChange(config.copy(isChecked = it)) }
                         )
@@ -581,31 +582,178 @@ fun ComponentPreviewContent(
             }
 
             "expressive_morphing" -> {
-                val animatedColor by animateColorAsState(
-                    targetValue = if (config.isChecked) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.secondaryContainer,
-                    label = "morphColor"
+                val shapeA = remember { com.example.ui.motion.ExpressiveShapeFactory.create4PointStar() }
+                val shapeB = remember { com.example.ui.motion.ExpressiveShapeFactory.createFlowerClover(6) }
+                val shapeC = remember { com.example.ui.motion.ExpressiveShapeFactory.createPill() }
+                val shapeD = remember { com.example.ui.motion.ExpressiveShapeFactory.createCircle(16) }
+
+                val morphAB = remember { androidx.graphics.shapes.Morph(shapeA, shapeB) }
+                val morphBC = remember { androidx.graphics.shapes.Morph(shapeB, shapeC) }
+                val morphCD = remember { androidx.graphics.shapes.Morph(shapeC, shapeD) }
+
+                val progress by animateFloatAsState(
+                    targetValue = if (config.isChecked) 1f else 0f,
+                    animationSpec = spring(
+                        dampingRatio = Spring.DampingRatioMediumBouncy,
+                        stiffness = Spring.StiffnessLow
+                    ),
+                    label = "morphProgress"
                 )
-                Box(
-                    modifier = Modifier
-                        .animateContentSize(spring(dampingRatio = 0.6f, stiffness = 400f))
-                        .clip(cornerShape)
-                        .background(animatedColor)
-                        .clickable { onConfigChange(config.copy(isChecked = !config.isChecked)) }
-                        .padding(if (config.isChecked) 28.dp else 16.dp),
-                    contentAlignment = Alignment.Center
+
+                val activeMorph = if (config.selectedVariant.contains("Pill")) morphBC else morphAB
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Icon(
-                            imageVector = if (config.isChecked) Icons.Filled.Check else Icons.Filled.Star,
-                            contentDescription = null,
-                            modifier = Modifier.size(if (config.isChecked) 36.dp else 24.dp)
-                        )
-                        Spacer(Modifier.height(8.dp))
-                        Text(
-                            text = if (config.isChecked) "Expanded Expressive State" else "Collapsed State (Tap to morph)",
-                            style = MaterialTheme.typography.labelLarge
+                    Box(
+                        modifier = Modifier
+                            .size(160.dp)
+                            .clip(RoundedCornerShape(24.dp))
+                            .background(MaterialTheme.colorScheme.surfaceContainerHighest)
+                            .clickable {
+                                onConfigChange(config.copy(isChecked = !config.isChecked))
+                            },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        com.example.ui.motion.MorphingShapeCanvas(
+                            morph = activeMorph,
+                            progress = progress,
+                            color = MaterialTheme.colorScheme.primary,
+                            strokeColor = MaterialTheme.colorScheme.tertiary,
+                            modifier = Modifier.size(130.dp)
                         )
                     }
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Button(
+                            onClick = { onConfigChange(config.copy(isChecked = !config.isChecked)) }
+                        ) {
+                            Text(if (config.isChecked) "Morph Backward (0%)" else "Morph Forward (100%)")
+                        }
+                    }
+
+                    Text(
+                        text = "Official AndroidX Graphics Shapes Morphing • Progress: ${(progress * 100).toInt()}%",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+
+            "expressive_loading_indicator" -> {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    val isContained = config.selectedVariant.contains("Contained")
+                    com.example.ui.components.ExpressiveLoadingIndicator(
+                        isContained = isContained,
+                        size = if (isContained) 64.dp else 52.dp
+                    )
+                    Text(
+                        text = if (isContained) "Contained Loading Indicator (7-shape morph loop)" else "Uncontained Loading Indicator",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+
+            "connected_button_group" -> {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    val options = if (config.selectedVariant.contains("4")) {
+                        listOf("Daily", "Weekly", "Monthly", "Yearly")
+                    } else {
+                        listOf("Day", "Week", "Month")
+                    }
+                    var sel by remember { mutableIntStateOf(0) }
+                    com.example.ui.components.ExpressiveConnectedButtonGroup(
+                        options = options,
+                        selectedIndex = sel,
+                        onSelectIndex = { sel = it }
+                    )
+                    Text(
+                        text = "Selected: ${options.getOrElse(sel) { "" }} (2dp inner padding, flips round ↔ square)",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+
+            "wavy_progress_indicator" -> {
+                Column(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+                    verticalArrangement = Arrangement.spacedBy(14.dp)
+                ) {
+                    val isIndeterminate = config.selectedVariant.contains("Indeterminate")
+                    com.example.ui.components.ExpressiveWavyLinearProgressIndicator(
+                        progress = if (isIndeterminate) null else config.sliderValue.coerceIn(0.1f, 1f),
+                        height = 20.dp,
+                        waveAmplitude = 6.dp
+                    )
+                    Text(
+                        text = if (isIndeterminate) "Indeterminate Sinusoidal Wavy Track" else "Determinate Wavy Track (${(config.sliderValue * 100).toInt()}%) with Stop Indicator",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+
+            "expressive_slider" -> {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(14.dp)
+                ) {
+                    val sliderSize = when {
+                        config.selectedVariant.contains("XL") -> com.example.ui.components.ExpressiveSliderSize.XL
+                        config.selectedVariant.contains("L") -> com.example.ui.components.ExpressiveSliderSize.L
+                        else -> com.example.ui.components.ExpressiveSliderSize.M
+                    }
+                    val isCentered = config.selectedVariant.contains("Centered")
+
+                    var sVal by remember { mutableFloatStateOf(config.sliderValue) }
+                    com.example.ui.components.ExpressiveSlider(
+                        value = sVal,
+                        onValueChange = {
+                            sVal = it
+                            onConfigChange(config.copy(sliderValue = it))
+                        },
+                        size = sliderSize,
+                        isCentered = isCentered,
+                        showInsetIcon = true,
+                        numStops = if (isCentered) 5 else 0
+                    )
+                    Text(
+                        text = "${sliderSize.label} Track • Value: ${(sVal * 100).toInt()}% • Handle shrinks on press",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+
+            "floating_toolbar" -> {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    com.example.ui.navigation.FloatingToolbarNavigation(
+                        currentRoute = "home",
+                        onNavigateToDestination = { },
+                        onOpenSettings = { }
+                    )
+                    Text(
+                        text = "Material 3 Expressive Floating Toolbar with Paired Companion Action",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
             }
 

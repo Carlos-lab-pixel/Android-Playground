@@ -4,7 +4,9 @@ import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -158,7 +160,7 @@ fun ThemeStudioScreen(
                             )
                         }
                     }
-                    Switch(
+                    com.example.ui.components.ExpressiveSwitch(
                         checked = themeState.isDynamicColor,
                         onCheckedChange = { isChecked ->
                             scope.launch { preferencesRepo.updateDynamicColor(isChecked) }
@@ -177,7 +179,7 @@ fun ThemeStudioScreen(
             }
         }
 
-        // 3. Custom Color Scheme Seeds
+        // 3. Custom Color Scheme Seeds (10 Expressive Palettes)
         Card(
             shape = RoundedCornerShape(20.dp),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
@@ -203,15 +205,16 @@ fun ThemeStudioScreen(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceAround
+                androidx.compose.foundation.lazy.LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(14.dp),
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    ColorSeed.values().forEach { seed ->
+                    items(ColorSeed.values().toList(), key = { it.name }) { seed ->
                         val isSelected = !themeState.isDynamicColor && themeState.colorSeed == seed
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             modifier = Modifier
+                                .clip(RoundedCornerShape(12.dp))
                                 .clickable {
                                     scope.launch {
                                         preferencesRepo.updateDynamicColor(false)
@@ -222,13 +225,15 @@ fun ThemeStudioScreen(
                         ) {
                             Box(
                                 modifier = Modifier
-                                    .size(48.dp)
+                                    .size(52.dp)
                                     .clip(CircleShape)
                                     .background(seed.primaryColor)
                                     .then(
                                         if (isSelected) {
-                                            Modifier.border(3.dp, MaterialTheme.colorScheme.onSurface, CircleShape)
-                                        } else Modifier
+                                            Modifier.border(3.5.dp, MaterialTheme.colorScheme.onSurface, CircleShape)
+                                        } else {
+                                            Modifier.border(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f), CircleShape)
+                                        }
                                     ),
                                 contentAlignment = Alignment.Center
                             ) {
@@ -236,15 +241,16 @@ fun ThemeStudioScreen(
                                     Icon(
                                         Icons.Filled.Check,
                                         contentDescription = "Selected",
-                                        tint = MaterialTheme.colorScheme.onPrimary,
-                                        modifier = Modifier.size(20.dp)
+                                        tint = Color.White,
+                                        modifier = Modifier.size(24.dp)
                                     )
                                 }
                             }
-                            Spacer(Modifier.height(4.dp))
+                            Spacer(Modifier.height(6.dp))
                             Text(
-                                text = seed.displayName.split(" ").first(),
-                                style = MaterialTheme.typography.labelSmall
+                                text = seed.displayName,
+                                style = MaterialTheme.typography.labelSmall,
+                                maxLines = 1
                             )
                         }
                     }
@@ -319,7 +325,7 @@ fun ThemeStudioScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text("Harmonized Switch Component")
-                    Switch(
+                    com.example.ui.components.ExpressiveSwitch(
                         checked = previewSwitchChecked,
                         onCheckedChange = { previewSwitchChecked = it }
                     )

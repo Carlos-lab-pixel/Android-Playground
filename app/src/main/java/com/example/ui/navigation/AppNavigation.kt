@@ -2,11 +2,11 @@ package com.example.ui.navigation
 
 import android.app.Activity
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -39,6 +39,7 @@ import com.example.ui.home.HomeScreen
 import com.example.ui.labs.LabsHubScreen
 import com.example.ui.playground.PlaygroundScreen
 import com.example.ui.settings.SettingsScreen
+import com.example.ui.theme.MaterialMotion
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
@@ -96,6 +97,23 @@ fun AppNavigation(
                 NavHost(
                     navController = navController,
                     startDestination = TopLevelDestination.HOME.route,
+                    // 30% shorter snappier transitions per Material 3 Expressive guidelines
+                    enterTransition = {
+                        fadeIn(tween(150, easing = MaterialMotion.EmphasizedDecelerateEasing)) +
+                                slideInHorizontally(tween(175, easing = MaterialMotion.EmphasizedDecelerateEasing)) { (it * 0.08f).toInt() }
+                    },
+                    exitTransition = {
+                        fadeOut(tween(100, easing = MaterialMotion.EmphasizedAccelerateEasing)) +
+                                slideOutHorizontally(tween(120, easing = MaterialMotion.EmphasizedAccelerateEasing)) { (-it * 0.08f).toInt() }
+                    },
+                    popEnterTransition = {
+                        fadeIn(tween(150, easing = MaterialMotion.EmphasizedDecelerateEasing)) +
+                                slideInHorizontally(tween(175, easing = MaterialMotion.EmphasizedDecelerateEasing)) { (-it * 0.08f).toInt() }
+                    },
+                    popExitTransition = {
+                        fadeOut(tween(100, easing = MaterialMotion.EmphasizedAccelerateEasing)) +
+                                slideOutHorizontally(tween(120, easing = MaterialMotion.EmphasizedAccelerateEasing)) { (it * 0.08f).toInt() }
+                    },
                     modifier = Modifier.fillMaxSize()
                 ) {
                     composable(TopLevelDestination.HOME.route) {
@@ -155,7 +173,6 @@ fun AppNavigation(
                     }
 
                     composable(SubDestinations.SETTINGS) {
-                        BackHandler { navController.popBackStack() }
                         SettingsScreen(
                             themeState = themeState,
                             preferencesRepo = preferencesRepo,
@@ -167,7 +184,6 @@ fun AppNavigation(
                         route = SubDestinations.PLAYGROUND,
                         arguments = listOf(navArgument("componentId") { type = NavType.StringType })
                     ) { backStackEntry ->
-                        BackHandler { navController.popBackStack() }
                         val componentId = backStackEntry.arguments?.getString("componentId")
                         val item = componentId?.let { ComponentCatalogData.getById(it) }
                             ?: ComponentCatalogData.allComponents.first()
@@ -179,14 +195,15 @@ fun AppNavigation(
                     }
                 }
 
-                // Compact Floating Bottom Navigation Bar
+                // Floating Toolbar Navigation Bar + Paired Settings Companion Button
                 if (!isExpanded && isTopLevelDestination) {
                     Box(
                         modifier = Modifier.align(Alignment.BottomCenter)
                     ) {
-                        FloatingNavigationBar(
+                        FloatingToolbarNavigation(
                             currentRoute = currentRoute,
-                            onNavigateToDestination = ::navigateToTopLevel
+                            onNavigateToDestination = ::navigateToTopLevel,
+                            onOpenSettings = { navController.navigate(SubDestinations.SETTINGS) }
                         )
                     }
                 }

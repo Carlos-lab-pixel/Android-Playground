@@ -171,7 +171,7 @@ fun PlaygroundScreen(
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(stringResource(R.string.playground_enabled))
-                        Switch(
+                        com.example.ui.components.ExpressiveSwitch(
                             checked = config.enabled,
                             onCheckedChange = { config = config.copy(enabled = it) }
                         )
@@ -185,7 +185,7 @@ fun PlaygroundScreen(
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             Text(stringResource(R.string.playground_show_icon))
-                            Switch(
+                            com.example.ui.components.ExpressiveSwitch(
                                 checked = config.showIcon,
                                 onCheckedChange = { config = config.copy(showIcon = it) }
                             )
